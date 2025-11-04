@@ -1,0 +1,6 @@
+---
+alwaysApply: true
+---
+Keep all files to 1000 lines or less
+Use entity framework for developing
+every time you add new things to the entities, or create new ones, create a SQL migration
