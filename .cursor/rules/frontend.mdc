@@ -1,0 +1,164 @@
+---
+alwaysApply: true
+---
+
+# React + Vite Frontend Best Practices
+
+## File Organization & Size
+- Keep all files to 1000 lines or less
+- One component per file, matching the filename (e.g., `UserCard.jsx` exports `UserCard`)
+- Separate components into logical folders under `src/components/`
+- Keep services separate in `src/services/`
+- Co-locate component-specific CSS files with components (e.g., `Button.jsx` and `Button.css`)
+
+## Component Structure
+- Use functional components with hooks (no class components)
+- Use PascalCase for component names and files (e.g., `ProjectList.jsx`)
+- Export components as default: `export default ComponentName`
+- Keep components focused and single-purpose
+- Break down large components into smaller, reusable ones
+- Order component code:
+  1. Imports
+  2. Component function declaration
+  3. State and hooks
+  4. Event handlers
+  5. useEffect hooks
+  6. Return JSX
+
+## React Hooks Best Practices
+- Always declare hooks at the top level (never inside conditions or loops)
+- Use `useState` for component-local state
+- Use `useEffect` for side effects (API calls, subscriptions, timers)
+- Include all dependencies in `useEffect` dependency arrays
+- Use `useCallback` for memoized callback functions
+- Use `useMemo` for expensive computations
+- Use `useRef` for DOM references and mutable values
+- Custom hooks should start with `use` prefix (e.g., `useAuth`, `useFetch`)
+
+## React Router DOM (v7)
+- Use `BrowserRouter` (aliased as `Router`) for routing
+- Define routes with `<Routes>` and `<Route>` components
+- Use `element` prop for route components: `<Route path="/" element={<Home />} />`
+- Use `useNavigate()` hook for programmatic navigation
+- Use `useParams()` hook to access URL parameters
+- Use `useLocation()` hook for current location information
+- Use `Link` or `NavLink` components for navigation (never `<a>` tags for internal links)
+
+## API Integration & Data Fetching
+- Centralize all API calls in `src/services/api.js`
+- Use async/await with try-catch for error handling
+- Use `import.meta.env` for environment variables (prefix with `VITE_`)
+- Always handle loading and error states in components
+- Use proper HTTP methods and status code handling
+- Add Content-Type headers for API requests
+- Pattern for API calls in components:
+```javascript
+const [data, setData] = useState(null);
+const [loading, setLoading] = useState(true);
+const [error, setError] = useState(null);
+
+useEffect(() => {
+  const fetchData = async () => {
+    try {
+      setLoading(true);
+      const result = await api.getData();
+      setData(result);
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+  fetchData();
+}, []);
+```
+
+## JSX Best Practices
+- Use self-closing tags when no children: `<Component />`
+- Use fragments `<>` or `<Fragment>` when returning multiple elements without a wrapper
+- Use conditional rendering: ternary operators for inline conditions, && for simple conditionals
+- Use `.map()` for rendering lists, always include unique `key` prop
+- Keep JSX readable: break long JSX into multiple lines
+- Extract complex JSX logic into separate variables or functions
+- Use meaningful variable names in destructuring
+
+## State Management
+- Start with local component state (`useState`)
+- Lift state up when multiple components need the same state
+- Consider Context API for global state (auth, theme, etc.)
+- Avoid prop drilling - use Context or state management library if needed
+- Keep state minimal and derive values when possible
+- Avoid storing derived values in state
+
+## Styling
+- Use CSS modules or component-level CSS files
+- Follow BEM naming convention or consistent class naming
+- Keep styles component-specific when possible
+- Use CSS variables for theme values (colors, spacing, fonts)
+- Make components responsive with media queries
+- Avoid inline styles unless dynamic values are needed
+
+## Performance Optimization
+- Use React.memo() for components that render often with same props
+- Lazy load routes with `React.lazy()` and `Suspense`
+- Avoid creating functions inside JSX (define handlers outside render)
+- Debounce expensive operations (search, resize handlers)
+- Use keys properly in lists (stable, unique identifiers - never array index if list can change)
+- Avoid unnecessary re-renders by proper dependency arrays in useEffect
+
+## Error Handling
+- Always use try-catch blocks for async operations
+- Display user-friendly error messages
+- Log errors to console for debugging: `console.error()`
+- Implement error boundaries for component-level error handling
+- Handle network errors gracefully (timeouts, offline state)
+- Validate user input before sending to API
+
+## Code Quality & Style
+- Use ESLint and follow the project's ESLint rules
+- Use descriptive variable and function names (camelCase)
+- Add comments for complex logic only
+- Use arrow functions for event handlers and callbacks
+- Use template literals for string interpolation
+- Use destructuring for props and state
+- Prefer const over let, never use var
+- Remove unused imports and variables
+- Keep functions pure when possible
+
+## Vite-Specific
+- Environment variables must be prefixed with `VITE_`
+- Access env vars with `import.meta.env.VITE_VARIABLE_NAME`
+- Use `npm run dev` for development server
+- Use `npm run build` for production builds
+- Use `npm run preview` to preview production build locally
+- Keep `vite.config.js` minimal and well-documented
+
+## Imports
+- Group imports logically:
+  1. React and third-party libraries
+  2. Components
+  3. Services/utilities
+  4. Styles
+- Use absolute imports when configured, relative imports otherwise
+- Keep import statements clean and organized
+
+## Accessibility
+- Use semantic HTML elements (`<button>`, `<nav>`, `<main>`, etc.)
+- Add alt text to images
+- Use proper heading hierarchy (h1, h2, h3, etc.)
+- Ensure keyboard navigation works
+- Add ARIA labels when needed for screen readers
+- Ensure sufficient color contrast
+
+## Testing Considerations
+- Write components to be testable (pure functions, separated logic)
+- Keep business logic separate from UI components
+- Use meaningful test IDs when needed: `data-testid="element-name"`
+- Mock API calls in tests
+- Test user interactions, not implementation details
+
+## Version Control
+- Commit working features, not broken code
+- Keep commits atomic and focused
+- Don't commit `node_modules/`, `dist/`, or `.env` files
+- Use meaningful commit messages

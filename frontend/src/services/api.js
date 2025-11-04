@@ -97,5 +97,192 @@ export const api = {
       throw error;
     }
   },
+
+  // Document Request endpoints
+  async getDocumentRequests() {
+    try {
+      const response = await fetch(`${API_BASE_URL}/DocumentRequests`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+      if (!response.ok) {
+        throw new Error(`Failed to fetch document requests: ${response.status} ${response.statusText}`);
+      }
+      return await response.json();
+    } catch (error) {
+      console.error('getDocumentRequests error:', error);
+      throw error;
+    }
+  },
+
+  async getDocumentRequestsByProject(projectId) {
+    try {
+      const response = await fetch(`${API_BASE_URL}/DocumentRequests/project/${projectId}`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+      if (!response.ok) {
+        throw new Error(`Failed to fetch document requests: ${response.status} ${response.statusText}`);
+      }
+      return await response.json();
+    } catch (error) {
+      console.error('getDocumentRequestsByProject error:', error);
+      throw error;
+    }
+  },
+
+  async createDocumentRequest(documentRequest) {
+    try {
+      const response = await fetch(`${API_BASE_URL}/DocumentRequests`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(documentRequest),
+      });
+      if (!response.ok) {
+        throw new Error(`Failed to create document request: ${response.status} ${response.statusText}`);
+      }
+      return await response.json();
+    } catch (error) {
+      console.error('createDocumentRequest error:', error);
+      throw error;
+    }
+  },
+
+  async updateDocumentRequest(id, documentRequest) {
+    try {
+      const response = await fetch(`${API_BASE_URL}/DocumentRequests/${id}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(documentRequest),
+      });
+      if (!response.ok) {
+        throw new Error(`Failed to update document request: ${response.status} ${response.statusText}`);
+      }
+      return response;
+    } catch (error) {
+      console.error('updateDocumentRequest error:', error);
+      throw error;
+    }
+  },
+
+  async getDocumentRequest(id) {
+    try {
+      const response = await fetch(`${API_BASE_URL}/DocumentRequests/${id}`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+      if (!response.ok) {
+        throw new Error(`Failed to fetch document request: ${response.status} ${response.statusText}`);
+      }
+      return await response.json();
+    } catch (error) {
+      console.error('getDocumentRequest error:', error);
+      throw error;
+    }
+  },
+
+  // Form Response endpoints
+  async getFormResponses() {
+    try {
+      const response = await fetch(`${API_BASE_URL}/FormResponses`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+      if (!response.ok) {
+        throw new Error(`Failed to fetch form responses: ${response.status} ${response.statusText}`);
+      }
+      return await response.json();
+    } catch (error) {
+      console.error('getFormResponses error:', error);
+      throw error;
+    }
+  },
+
+  async getFormResponsesByRequest(requestId) {
+    try {
+      const response = await fetch(`${API_BASE_URL}/FormResponses/request/${requestId}`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+      if (!response.ok) {
+        throw new Error(`Failed to fetch form responses: ${response.status} ${response.statusText}`);
+      }
+      return await response.json();
+    } catch (error) {
+      console.error('getFormResponsesByRequest error:', error);
+      throw error;
+    }
+  },
+
+  async submitFormResponse(formResponse) {
+    try {
+      const response = await fetch(`${API_BASE_URL}/FormResponses`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formResponse),
+      });
+      if (!response.ok) {
+        throw new Error(`Failed to submit form response: ${response.status} ${response.statusText}`);
+      }
+      return await response.json();
+    } catch (error) {
+      console.error('submitFormResponse error:', error);
+      throw error;
+    }
+  },
+
+  async submitFormResponsesBatch(formResponses) {
+    try {
+      const response = await fetch(`${API_BASE_URL}/FormResponses/batch`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formResponses),
+      });
+      if (!response.ok) {
+        throw new Error(`Failed to submit form responses: ${response.status} ${response.statusText}`);
+      }
+      return await response.json();
+    } catch (error) {
+      console.error('submitFormResponsesBatch error:', error);
+      throw error;
+    }
+  },
+
+  async updateFormResponse(id, formResponse) {
+    try {
+      const response = await fetch(`${API_BASE_URL}/FormResponses/${id}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formResponse),
+      });
+      if (!response.ok) {
+        throw new Error(`Failed to update form response: ${response.status} ${response.statusText}`);
+      }
+      return response;
+    } catch (error) {
+      console.error('updateFormResponse error:', error);
+      throw error;
+    }
+  },
 };
 

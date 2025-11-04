@@ -19,6 +19,11 @@ function Navbar() {
               Projects
             </Link>
           </li>
+          <li className="navbar-item">
+            <Link to="/forms" className="navbar-link">
+              Forms
+            </Link>
+          </li>
         </ul>
       </div>
     </nav>

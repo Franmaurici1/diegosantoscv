@@ -4,6 +4,9 @@ import Home from './components/Home';
 import ProjectList from './components/ProjectList';
 import ProjectDetail from './components/ProjectDetail';
 import ProjectCode from './components/ProjectCode';
+import DocumentRequest from './components/DocumentRequest';
+import FormList from './components/FormList';
+import ClientForm from './components/ClientForm';
 import './App.css';
 
 function App() {
@@ -15,7 +18,9 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/projects" element={<ProjectList />} />
           <Route path="/projects/:id" element={<ProjectDetail />} />
-          <Route path="/project-code/:id" element={<ProjectCode />} />
+          <Route path="/project-code/:id" element={<DocumentRequest />} />
+          <Route path="/forms" element={<FormList />} />
+          <Route path="/form/:requestId" element={<ClientForm />} />
         </Routes>
       </div>
     </Router>

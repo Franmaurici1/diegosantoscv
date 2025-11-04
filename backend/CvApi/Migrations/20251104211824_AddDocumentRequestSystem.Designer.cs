@@ -3,6 +3,7 @@ using System;
 using CvApi.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CvApi.Migrations
 {
     [DbContext(typeof(CvDbContext))]
-    partial class CvDbContextModelSnapshot : ModelSnapshot
+    [Migration("20251104211824_AddDocumentRequestSystem")]
+    partial class AddDocumentRequestSystem
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "9.0.10");
@@ -71,7 +74,7 @@ namespace CvApi.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("TEXT");
 
-                    b.Property<int?>("ProjectId")
+                    b.Property<int>("ProjectId")
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("ProjectName")
@@ -133,37 +136,6 @@ namespace CvApi.Migrations
                     b.HasIndex("DisplayOrder");
 
                     b.ToTable("Educations");
-                });
-
-            modelBuilder.Entity("CvApi.Models.FormResponse", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("TEXT");
-
-                    b.Property<int>("DocumentRequestId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("RequestTopicId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<string>("ResponseText")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.Property<DateTime?>("UpdatedAt")
-                        .HasColumnType("TEXT");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("DocumentRequestId");
-
-                    b.HasIndex("RequestTopicId");
-
-                    b.ToTable("FormResponses");
                 });
 
             modelBuilder.Entity("CvApi.Models.Project", b =>
@@ -376,28 +348,10 @@ namespace CvApi.Migrations
                     b.HasOne("CvApi.Models.Project", "Project")
                         .WithMany()
                         .HasForeignKey("ProjectId")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
 
                     b.Navigation("Project");
-                });
-
-            modelBuilder.Entity("CvApi.Models.FormResponse", b =>
-                {
-                    b.HasOne("CvApi.Models.DocumentRequest", "DocumentRequest")
-                        .WithMany()
-                        .HasForeignKey("DocumentRequestId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("CvApi.Models.RequestTopic", "RequestTopic")
-                        .WithMany()
-                        .HasForeignKey("RequestTopicId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("DocumentRequest");
-
-                    b.Navigation("RequestTopic");
                 });
 
             modelBuilder.Entity("CvApi.Models.RequestTopic", b =>

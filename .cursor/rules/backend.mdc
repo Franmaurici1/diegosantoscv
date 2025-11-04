@@ -1,6 +1,94 @@
 ---
 alwaysApply: true
 ---
-Keep all files to 1000 lines or less
-Use entity framework for developing
-every time you add new things to the entities, or create new ones, create a SQL migration
+# ASP.NET Core Backend Best Practices
+
+## File Organization & Size
+- Keep all files to 1000 lines or less
+- Split large files into multiple files using partial classes or separate concerns
+- One controller per entity, one model per file
+
+## Entity Framework Core
+- Use Entity Framework Core for all database operations
+- **CRITICAL**: Every time you add new properties to entities or create new entities, create a SQL migration immediately
+- Migration command: `dotnet ef migrations add MigrationName --project backend/CvApi`
+- Update database command: `dotnet ef database update --project backend/CvApi`
+- Use `DbContext` for database operations, never write raw SQL unless absolutely necessary
+- Use async/await for all database operations (`ToListAsync()`, `FirstOrDefaultAsync()`, `SaveChangesAsync()`)
+- Configure entity relationships in `OnModelCreating()` using Fluent API
+- Use navigation properties for relationships between entities
+
+## Model & Entity Guidelines
+- Use data annotations (`[Required]`, `[MaxLength]`, `[Key]`) for validation and schema definition
+- Enable nullable reference types (`<Nullable>enable</Nullable>`)
+- Use `int` for IDs by convention
+- Include timestamp properties: `CreatedAt`, `UpdatedAt` when needed
+- Keep business logic out of models; models should be data containers only
+
+## Controller Best Practices
+- Inherit from `ControllerBase` for API controllers
+- Use RESTful routing conventions:
+  - GET `/api/[controller]` - Get all
+  - GET `/api/[controller]/{id}` - Get by ID
+  - POST `/api/[controller]` - Create
+  - PUT `/api/[controller]/{id}` - Update
+  - DELETE `/api/[controller]/{id}` - Delete
+- Use `[HttpGet]`, `[HttpPost]`, `[HttpPut]`, `[HttpDelete]` attributes
+- Use `[Route("api/[controller]")]` and `[ApiController]` attributes
+- Return appropriate HTTP status codes:
+  - 200 OK for successful GET/PUT
+  - 201 Created for successful POST (with `CreatedAtAction`)
+  - 204 No Content for successful DELETE
+  - 400 Bad Request for validation errors
+  - 404 Not Found when resource doesn't exist
+- Use async/await for all controller actions
+- Return `ActionResult<T>` for type-safe responses
+- Validate model state with `ModelState.IsValid`
+
+## Dependency Injection
+- Register services in `Program.cs`
+- Use constructor injection in controllers
+- Register `DbContext` with appropriate lifetime (scoped by default)
+- Use interfaces for services to enable testing
+
+## API Configuration
+- Use CORS policy for frontend applications
+- Configure Swagger/OpenAPI for API documentation
+- Use environment-specific configuration (`appsettings.Development.json`, `appsettings.json`)
+- Never commit sensitive data (connection strings, API keys) - use user secrets or environment variables
+
+## Error Handling
+- Use try-catch blocks for operations that might fail
+- Return appropriate error responses with meaningful messages
+- Log errors appropriately (use `ILogger<T>`)
+- Create custom exception handlers for global error handling when needed
+
+## Code Quality
+- Use meaningful variable and method names
+- Follow C# naming conventions:
+  - PascalCase for classes, methods, properties
+  - camelCase for parameters, local variables
+  - Prefix interfaces with `I`
+- Keep methods focused and single-purpose
+- Use LINQ for data queries
+- Prefer explicit types over `var` for clarity in public APIs
+- Add XML comments to public APIs for Swagger documentation
+
+## Performance
+- Use `AsNoTracking()` for read-only queries
+- Use `Include()` and `ThenInclude()` for eager loading to avoid N+1 queries
+- Avoid loading unnecessary data - use projections with `Select()`
+- Index frequently queried columns in `OnModelCreating()`
+- Use pagination for large datasets
+
+## Testing Considerations
+- Keep controllers thin - move business logic to services
+- Use dependency injection to enable unit testing
+- Make services testable by using interfaces
+
+## Version Control
+- Commit migrations to source control
+- Never delete migrations that have been deployed
+- Keep database schema changes backward compatible when possible
+
+If you are using twilio, please use this documentation https://www.twilio.com/docs 
